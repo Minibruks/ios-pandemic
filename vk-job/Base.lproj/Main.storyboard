@@ -47,6 +47,17 @@
                                     <action selector="StartPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="h1k-6j-wgq"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Timer" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vhG-tu-su1">
+                                <rect key="frame" x="154" y="500" width="85" height="20.333333333333371"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Scq-d4-pjK">
+                                <rect key="frame" x="148" y="542" width="97" height="34"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -57,21 +68,29 @@
                             <constraint firstItem="dJ0-nu-UJF" firstAttribute="top" secondItem="Sie-Dq-nFp" secondAttribute="bottom" constant="158.66666666666669" id="6xr-84-EtU"/>
                             <constraint firstItem="Sie-Dq-nFp" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="132" id="7dB-Oc-9rU"/>
                             <constraint firstItem="AxT-91-qOe" firstAttribute="top" secondItem="Sie-Dq-nFp" secondAttribute="bottom" constant="46.333333333333343" id="97p-dh-p5r"/>
+                            <constraint firstItem="Scq-d4-pjK" firstAttribute="top" secondItem="Sie-Dq-nFp" secondAttribute="bottom" constant="373.66666666666663" id="ExB-mC-ejF"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Scq-d4-pjK" secondAttribute="trailing" constant="148" id="Ggg-lg-xWM"/>
                             <constraint firstItem="NUp-F0-2VS" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="148" id="Ier-87-mZ9"/>
                             <constraint firstItem="dJ0-nu-UJF" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="120" id="MFa-uW-ReW"/>
+                            <constraint firstItem="vhG-tu-su1" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="154" id="Odr-2E-SNm"/>
+                            <constraint firstItem="Scq-d4-pjK" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="148" id="Pmh-qY-Wr3"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="AxT-91-qOe" secondAttribute="trailing" constant="148" id="QBY-40-Urx"/>
+                            <constraint firstItem="vhG-tu-su1" firstAttribute="top" secondItem="Sie-Dq-nFp" secondAttribute="bottom" constant="331.66666666666663" id="RRx-N1-cra"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Sie-Dq-nFp" secondAttribute="trailing" constant="133" id="Uit-ZA-7Ci"/>
                             <constraint firstItem="XOg-rV-YlF" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="114" id="Y1Z-7Q-cpF"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="NUp-F0-2VS" secondAttribute="trailing" constant="148" id="aLm-2g-xJr"/>
                             <constraint firstItem="Sie-Dq-nFp" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="45" id="evK-QC-Hwd"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="XOg-rV-YlF" secondAttribute="bottom" constant="66" id="f4g-lv-l7F"/>
                             <constraint firstItem="AxT-91-qOe" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="148" id="jvm-OS-nyg"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="vhG-tu-su1" secondAttribute="trailing" constant="154" id="zeu-jo-ZMm"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="eXW-De-YtZ"/>
                     <connections>
+                        <outlet property="StartButton" destination="XOg-rV-YlF" id="0wv-lt-Wcz"/>
                         <outlet property="groupSize" destination="AxT-91-qOe" id="16Q-Lf-HZl"/>
                         <outlet property="infectionFactor" destination="NUp-F0-2VS" id="OUq-gC-DOb"/>
+                        <outlet property="timer" destination="Scq-d4-pjK" id="dS1-9L-AyB"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -85,13 +104,29 @@
                     <view key="view" contentMode="scaleToFill" id="NZQ-1e-hJI">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wWJ-5K-IeV">
+                                <rect key="frame" x="146" y="59.000000000000007" width="101" height="20.333333333333336"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="zPd-cU-IRp"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="wWJ-5K-IeV" firstAttribute="top" secondItem="zPd-cU-IRp" secondAttribute="top" id="HSf-D3-Zet"/>
+                            <constraint firstItem="zPd-cU-IRp" firstAttribute="trailing" secondItem="wWJ-5K-IeV" secondAttribute="trailing" constant="146" id="XSx-Ct-osc"/>
+                            <constraint firstItem="wWJ-5K-IeV" firstAttribute="leading" secondItem="zPd-cU-IRp" secondAttribute="leading" constant="146" id="j1H-tZ-IPe"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="info" destination="wWJ-5K-IeV" id="7bf-GO-b25"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0c3-Db-PcR" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1967" y="4"/>
+            <point key="canvasLocation" x="1965.6488549618321" y="3.5211267605633805"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="8HY-2T-RU5">

@@ -15,6 +15,7 @@ final class PandemicViewController: UIViewController, UICollectionViewDelegate, 
             
     private var collectionView: UICollectionView?
     
+    @IBOutlet weak var info: UILabel!
     private static let logger = Logger(
         subsystem: Bundle.main.bundleIdentifier!,
         category: String(describing: PandemicViewController.self)
@@ -23,7 +24,8 @@ final class PandemicViewController: UIViewController, UICollectionViewDelegate, 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .systemBlue
+//        view.backgroundColor = .systemBlue
+        info.text = "🟢: \(pandemicInfo.getGroupSize() - pandemicInfo.infectedSize) 🔴: \(pandemicInfo.infectedSize)"
         
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
@@ -34,7 +36,12 @@ final class PandemicViewController: UIViewController, UICollectionViewDelegate, 
         collectionView.dataSource = self
         collectionView.delegate = self
         view.addSubview(collectionView)
-        collectionView.frame = view.bounds
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: 125).isActive = true
+        collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
+        collectionView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 0).isActive = true
+        collectionView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: 0).isActive = true
+//        collectionView.frame = view.bounds
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -65,8 +72,8 @@ final class PandemicViewController: UIViewController, UICollectionViewDelegate, 
         } else {
             cell.changeRed()
         }
-                
-        self.startInfection(indexPath: [0, indexPath.row], period: 1.0)
+        info.text = "🟢: \(pandemicInfo.getGroupSize() - pandemicInfo.infectedSize) 🔴: \(pandemicInfo.infectedSize)"
+        self.startInfection(indexPath: [0, indexPath.row], period: pandemicInfo.getTimer())
     }
     
     func isAllInfected() -> Bool {
@@ -82,7 +89,7 @@ final class PandemicViewController: UIViewController, UICollectionViewDelegate, 
         return false
     }
     
-    func startInfection(indexPath: IndexPath, period: Double) {
+    func startInfection(indexPath: IndexPath, period: Int) {
         PandemicViewController.logger.trace("🟢 Entered switch colors")
         if isAllInfected() {
             return
@@ -97,18 +104,19 @@ final class PandemicViewController: UIViewController, UICollectionViewDelegate, 
                     let right = min(j + self.pandemicInfo.getInfectionFactor(), n - 1)
                     if self.pandemicInfo.tmp[j] {
                         for i in left...right {
-                            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(Int(period))) {
                                 if !self.isAllInfected() {
                                     let cell = self.collectionView!.cellForItem(at: [0, i]) as! CustomCollectionViewCell
                                     cell.pandemicInfo = self.pandemicInfo
                                     if !self.pandemicInfo.tmp[i] {
                                         cell.changeRed()
                                         self.pandemicInfo.tmp[i] = true
+                                        self.info.text = "🟢: \(self.pandemicInfo.getGroupSize() - self.pandemicInfo.infectedSize) 🔴: \(self.pandemicInfo.infectedSize)"
                                     }
                                 }
                             }
                         }
-                        Thread.sleep(forTimeInterval: 1.0)
+                        Thread.sleep(forTimeInterval: TimeInterval(period))
                     }
                 }
             }

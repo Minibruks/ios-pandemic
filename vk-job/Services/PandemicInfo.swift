@@ -11,7 +11,9 @@ import Foundation
 class PandemicInfo {
     private var groupSize: Int
     private var infectionFactor: Int
+    private var timer: Int
     private var firstCellSelected: Bool
+    
     public var tmp = [Bool]()
     public var infectedSize = 0
     public var finish = false
@@ -20,6 +22,7 @@ class PandemicInfo {
         self.groupSize = 0
         self.infectionFactor = 0
         self.firstCellSelected = false
+        self.timer = 0
     }
     
     public func getGroupSize() -> Int {
@@ -28,6 +31,10 @@ class PandemicInfo {
     
     public func getInfectionFactor() -> Int {
         return infectionFactor
+    }
+    
+    public func getTimer() -> Int {
+        return timer
     }
     
     public func setGroupSize(newGroupSize: Int) {
@@ -46,6 +53,10 @@ class PandemicInfo {
     
     public func setInfectionFactor(newInfectionFactor: Int) {
         self.infectionFactor = newInfectionFactor
+    }
+    
+    public func setTimer(newTimer: Int) {
+        self.timer = newTimer
     }
     
     public func setFirstCellSelected(newFirstCellSelected: Bool) {
