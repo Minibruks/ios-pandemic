@@ -20,16 +20,21 @@ class CustomCollectionViewCell: UICollectionViewCell {
         fatalError("error")
     }
     
-    public func changeColour() {
+    public func changeRed() {
         contentView.backgroundColor = .systemRed
+        isInfected = true
     }
     
-    override var isSelected: Bool {
-        didSet {
-            if isSelected {
-                changeColour()
-                isInfected = true
-            }
-        }
+    public func changeGreen() {
+        contentView.backgroundColor = .systemGreen
     }
+    
+//    override var isSelected: Bool {
+//        didSet {
+//            if isSelected {
+//                changeColour()
+//                isInfected = true
+//            }
+//        }
+//    }
 }

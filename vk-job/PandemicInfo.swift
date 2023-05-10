@@ -12,6 +12,8 @@ class PandemicInfo {
     private var groupSize: Int
     private var infectionFactor: Int
     private var firstCellSelected: Bool
+    public var tmp = [Bool]()
+    public var infectedSize = 0
     
     init() {
         self.groupSize = 0
@@ -28,6 +30,9 @@ class PandemicInfo {
     }
     
     public func setGroupSize(newGroupSize: Int) {
+        for _ in 0...(newGroupSize - 1) {
+            tmp.append(false)
+        }
         self.groupSize = newGroupSize
     }
     
