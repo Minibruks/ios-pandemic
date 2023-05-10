@@ -17,6 +17,8 @@ final class StoryAssembler {
     
     var setUp: UINavigationController {
         let controller = Storyboard.main.instantiateViewController(withIdentifier: "SetUpViewController") as! SetUpViewController
+        controller.modalTransitionStyle = .coverVertical
+        controller.modalPresentationStyle = .overFullScreen
         controller.pandemicInfo = pandemicInfo
         controller.storyAssembler = self
         let navController = UINavigationController(rootViewController: controller)

@@ -14,6 +14,7 @@ class PandemicInfo {
     private var firstCellSelected: Bool
     public var tmp = [Bool]()
     public var infectedSize = 0
+    public var finish = false
     
     init() {
         self.groupSize = 0
@@ -30,10 +31,17 @@ class PandemicInfo {
     }
     
     public func setGroupSize(newGroupSize: Int) {
-        for _ in 0...(newGroupSize - 1) {
-            tmp.append(false)
-        }
         self.groupSize = newGroupSize
+        
+        if tmp.count < self.groupSize {
+            for _ in 0...(newGroupSize - 1) {
+                tmp.append(false)
+            }
+        } else {
+            for i in 0...(newGroupSize - 1) {
+                tmp[i] = false
+            }
+        }
     }
     
     public func setInfectionFactor(newInfectionFactor: Int) {

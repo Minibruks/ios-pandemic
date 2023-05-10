@@ -12,17 +12,7 @@ import os
 final class PandemicViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     var pandemicInfo: PandemicInfo!
     var storyAssembler: StoryAssembler!
-    
-    struct Pair : Hashable {
-        var i : Int
-        var j : Bool
-    }
-    
-    var hasIndex : Set<Pair> = []
-    var current_i: Int = 0
-    
-//    var tmp = [Bool](repeating: false, count: 64)
-    
+            
     private var collectionView: UICollectionView?
     
     private static let logger = Logger(
@@ -45,7 +35,6 @@ final class PandemicViewController: UIViewController, UICollectionViewDelegate, 
         collectionView.delegate = self
         view.addSubview(collectionView)
         collectionView.frame = view.bounds
-//        self.startSwitchingColor(indexPath: [0, 2], period: 1.0)
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -54,8 +43,9 @@ final class PandemicViewController: UIViewController, UICollectionViewDelegate, 
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CustomCollectionViewCell.identifier, for: indexPath) as! CustomCollectionViewCell
+        cell.pandemicInfo = pandemicInfo
      
-        print("idx path \(indexPath.row) and tmp: \(pandemicInfo.tmp[indexPath.row])")
+        PandemicViewController.logger.trace("idx path \(indexPath.row) and tmp: \(self.pandemicInfo.tmp[indexPath.row])")
         if pandemicInfo.tmp[indexPath.row] == false {
             cell.changeGreen()
         } else {
@@ -65,22 +55,27 @@ final class PandemicViewController: UIViewController, UICollectionViewDelegate, 
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("SELECT \(indexPath.row)")
+        PandemicViewController.logger.trace("SELECT \(indexPath.row)")
         pandemicInfo.tmp[indexPath.row] = true
         let cell = collectionView.cellForItem(at: indexPath) as! CustomCollectionViewCell
-//        print("is infected \(cell.isInfected)")
+        cell.pandemicInfo = pandemicInfo
+        
         if pandemicInfo.tmp[indexPath.row] == false {
             cell.changeGreen()
         } else {
             cell.changeRed()
         }
-        
+                
         self.startInfection(indexPath: [0, indexPath.row], period: 1.0)
-//        self.collectionView?.reloadData()
     }
     
     func isAllInfected() -> Bool {
-        if self.pandemicInfo.infectedSize == self.pandemicInfo.getGroupSize() {
+        if !pandemicInfo.finish && self.pandemicInfo.infectedSize >= self.pandemicInfo.getGroupSize() {
+            pandemicInfo.finish = true
+            let alert = UIAlertController(title: "Pandemic completed", message: "", preferredStyle: UIAlertController.Style.alert)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+            PandemicViewController.logger.trace("FINISH")
             return true
         }
         
@@ -89,17 +84,33 @@ final class PandemicViewController: UIViewController, UICollectionViewDelegate, 
     
     func startInfection(indexPath: IndexPath, period: Double) {
         PandemicViewController.logger.trace("🟢 Entered switch colors")
+        if isAllInfected() {
+            return
+        }
         let n = self.pandemicInfo.getGroupSize()
-        let left = min(indexPath.row - pandemicInfo.getInfectionFactor(), 0)
-        let right = min(indexPath.row + pandemicInfo.getInfectionFactor(), n)
+        
         
         DispatchQueue.global().async {
             while !self.isAllInfected() {
-                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
-                    let cell = self.collectionView!.cellForItem(at: [0, 0]) as! CustomCollectionViewCell
-                    cell.changeRed()
+                for j in 0...n - 1 {
+                    let left = max(j - self.pandemicInfo.getInfectionFactor(), 0)
+                    let right = min(j + self.pandemicInfo.getInfectionFactor(), n - 1)
+                    if self.pandemicInfo.tmp[j] {
+                        for i in left...right {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
+                                if !self.isAllInfected() {
+                                    let cell = self.collectionView!.cellForItem(at: [0, i]) as! CustomCollectionViewCell
+                                    cell.pandemicInfo = self.pandemicInfo
+                                    if !self.pandemicInfo.tmp[i] {
+                                        cell.changeRed()
+                                        self.pandemicInfo.tmp[i] = true
+                                    }
+                                }
+                            }
+                        }
+                        Thread.sleep(forTimeInterval: 1.0)
+                    }
                 }
-                Thread.sleep(forTimeInterval: 1.0)
             }
         }
     }

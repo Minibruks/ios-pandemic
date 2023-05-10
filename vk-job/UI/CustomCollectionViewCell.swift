@@ -7,9 +7,10 @@
 
 import UIKit
 
-class CustomCollectionViewCell: UICollectionViewCell {
+class CustomCollectionViewCell: UICollectionViewCell, UIGestureRecognizerDelegate {
     static let identifier = "CustomCollectionViewCell"
     var isInfected: Bool = false
+    var pandemicInfo: PandemicInfo!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -23,18 +24,10 @@ class CustomCollectionViewCell: UICollectionViewCell {
     public func changeRed() {
         contentView.backgroundColor = .systemRed
         isInfected = true
+        pandemicInfo.infectedSize += 1
     }
     
     public func changeGreen() {
         contentView.backgroundColor = .systemGreen
     }
-    
-//    override var isSelected: Bool {
-//        didSet {
-//            if isSelected {
-//                changeColour()
-//                isInfected = true
-//            }
-//        }
-//    }
 }
